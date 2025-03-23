@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>N+7</title>
+
+    <meta name="description" content="A simple exercise template." />
+    <!-- styles -->
+    <style></style>
+  </head>
+  <body>
+    <h1>N+7</h1>
+    <h2>Source text</h2>
+    <p id="sourceText"></p>
+    <h2>New text</h2>
+    <p id="newText"></p>
+    <!-- script -->
+    <script>
+      let nouns;
+      const sourceText = `The tank was not like the round water tank you see in your mind when your mother tells you they lived in a water tank. 
+
+Now you know the tank was cut in half and turned on its side so that the side  of the old image becomes the real roof. 
+
+At night in your proper bedroom with the slated roof and the insulated walls, the clothes on the back of your chair become a Strega with a hooked nose. She doesn’t scare you. But her morning acts of disappearance do. 
+
+As a child in the bedroom, you could imagine many places better to live than a water tank. The bedroom that could fit the water tank inside of it maybe, if you could visualise and then measure the parameters.  
+
+You walk the parameters of the story , graze your hand on the corrugated iron edges.  
+`;
+      const wordOffset = 2;
+      function generateNewText(text) {
+        let splitText = text.split(" ");
+        let newText = "";
+        for (const word of splitText) {
+          let indexInList = nouns.indexOf(word);
+          let newWord;
+          if (indexInList > -1) {
+            if (nouns[indexInList + wordOffset]) {
+              newWord = nouns[indexInList + wordOffset];
+            }
+          } else {
+            newWord = word;
+          }
+          if (newText === "") {
+            newText = newWord;
+          } else {
+            newText = newText + " " + newWord;
+          }
+        }
+        return newText;
+      }
+      function initPoem(nounList) {
+        nouns = nounList.split(/\r?\n/);
+        newText = generateNewText(sourceText);
+        document.getElementById("sourceText").innerHTML = sourceText;
+        document.getElementById("newText").innerHTML = newText;
+      }
+      fetch("nounlist.txt")
+        .then((response) => response.text())
+        .then((textContent) => initPoem(textContent));
+    </script>
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <div
+      class="glitchButton"
+      style="position: fixed; top: 20px; right: 20px"
+    ></div>
+    <script src="https://button.glitch.me/button.js" defer></script>
+  </body>
+</html>
